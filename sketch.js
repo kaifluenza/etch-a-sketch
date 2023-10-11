@@ -1,115 +1,93 @@
-//reference to adjuster button
-const sizeBtn = document.querySelector('#size');
+//reference to div container
+const container = document.querySelector('.container');
 
-function sizeBtnHandler(){
-    let size = prompt("Desired number of squares per side");
+//default number of grids per side
+let numGridsPerSide = 32;
+
+//create first grids pad
+makeGrids(numGridsPerSide);
+attachListeners();
+
+//reference to grid size adjuster button
+const sizeBtn = document.querySelector('#size');
+sizeBtn.addEventListener('click',()=>{
+    sizeBtnHandler();
+});
+
+const clearBtn = document.querySelector('#clear');
+clearBtn.addEventListener('click',()=>{
+    //remove current grids
     while(container.firstChild){
         container.removeChild(container.firstChild);
     }
-    let divSize = 500 / Number(size);
-    let str = divSize.toString();
+    makeGrids(numGridsPerSide);
+    attachListeners();
+})
 
-    for(let i=0; i<size; i++){ 
-        for(let j=0; j<size; j++ ){
+
+function makeGrids(numGrid){
+    let divSize = 500 / Number(numGrid);
+    for(let i=0; i<numGrid; i++){ 
+        for(let j=0; j<numGrid; j++ ){
             const cell = document.createElement('div');
             cell.classList.toggle('grid');
             cell.style.width = divSize + 'px';   // Setting the width here
             cell.style.height = divSize + 'px';
             container.appendChild(cell);
-            
         }
-        
     }
-
-    attachListeners();
+    
 }
 
-sizeBtn.addEventListener('click',()=>{
-    sizeBtnHandler();
-});
+function sizeBtnHandler(){
+    let size = prompt("Desired number of squares per side");
+    if(size==null){
+    }else{
+        while(size>100||size<1){
+            if(size>100){
+                  size = prompt("Max number is 100, pleaes re-enter")
+              }else{
+                  size = prompt("Min number is 1, pleae re-enter")
+              }
+        }
 
+        numGridsPerSide = size; //update
 
-
-//reference to div container
-const container = document.querySelector('.container');
-
-//create grid divs until it fills up the container
-while(container.scrollHeight===container.clientHeight){
-    const div = document.createElement('div');
-    div.classList.toggle('grid');
-    container.appendChild(div);
-
-    //when container is overfilled, remove the extra div, and exit out of loop
-    if(container.scrollHeight>container.clientHeight){
-        container.removeChild(div);
-        break;
-    }
+        //remove current grids
+        while(container.firstChild){
+              container.removeChild(container.firstChild);
+        }
+        //create new grid
+        makeGrids(size);
+        attachListeners();
+       
+    } 
 }
-
-//track if mouse is cliked
-let isMouseDown = false;
-
-//when user clicks on a grid, change the color of the grid
-container.addEventListener('mousedown',(event)=>{
-    isMouseDown = true;
-    changeColor(event.target);
-});
-
-//when user drag the mouse (ONLY after it has been clicked), 
-//change color of the grid dragged over
-container.addEventListener('mousemove',(event)=>{
-    if(isMouseDown==true){
-        changeColor(event.target);
-    }
-});
-
-//when user release the mouse, stop changing color,
-//by setting flag to false so changeColor is not invoked 
-//in mousemove event
-container.addEventListener('mouseup',(event)=>{
-    isMouseDown = false;
-});
-
-
-function changeColor(element){
-    if(element.classList.contains('grid')){
-        element.style.backgroundColor = 'red';
-        element.style.borderColor = 'red';
-    }
-}
-
-
 
 function attachListeners(){
-    //track if mouse is cliked
-let isMouseDown = false;
-
-//when user clicks on a grid, change the color of the grid
-container.addEventListener('mousedown',(event)=>{
-    isMouseDown = true;
-    changeColor(event.target);
-});
-
-//when user drag the mouse (ONLY after it has been clicked), 
-//change color of the grid dragged over
-container.addEventListener('mousemove',(event)=>{
-    if(isMouseDown==true){
+    let isMouseDown = false; //track if mouse is cliked
+    //when user clicks on a grid, change the color of the grid
+    container.addEventListener('mousedown',(event)=>{
+        isMouseDown = true;
         changeColor(event.target);
-    }
-});
-
-//when user release the mouse, stop changing color,
-//by setting flag to false so changeColor is not invoked 
-//in mousemove event
-container.addEventListener('mouseup',(event)=>{
-    isMouseDown = false;
-});
-
+    });
+    //when user drag the mouse (ONLY after it has been clicked), 
+    //change color of the grid dragged over
+    container.addEventListener('mousemove',(event)=>{
+        if(isMouseDown==true){
+        changeColor(event.target);
+        }
+    });
+    //when user release the mouse, stop changing color,
+    container.addEventListener('mouseup',(event)=>{
+        isMouseDown = false;
+    });
+}
 
 function changeColor(element){
     if(element.classList.contains('grid')){
-        element.style.backgroundColor = 'red';
-        element.style.borderColor = 'red';
+        element.style.backgroundColor = 'black';
+        element.style.borderColor = 'black';
     }
 }
-}
+
