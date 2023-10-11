@@ -1,0 +1,46 @@
+body{
+    padding:36px;
+}
+.header{
+   text-align:center;
+}
+.content{
+    display:flex;
+    gap:10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:20px;
+}
+
+
+.container{
+    width:500px;
+    height:500px;
+
+    padding: 16px;
+    background-color: bisque;
+    border-radius: 16px;
+
+    display: flex;
+    flex-wrap: wrap;
+    
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.container div{
+    background-color: pink;
+    box-sizing:border-box;
+    border: solid 1px gray;
+    width: 16px;
+    height: 16px;
+}
+
+
